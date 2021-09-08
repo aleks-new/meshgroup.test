@@ -1,0 +1,1 @@
+docker-compose exec --user app web bash
