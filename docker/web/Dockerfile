@@ -10,12 +10,14 @@ RUN apt-get update && apt-get install -y \
             zip \
     		git \
     		mariadb-client \
+			cron \
     && docker-php-ext-install \
     pdo_mysql \
     gd \
     zip \
     && a2enmod \
-    rewrite
+    rewrite \
+	
 
 # Add the user UID:1000, GID:1000, home at /app
 RUN groupadd -r app -g 1000 && useradd -u 1000 -r -g app -m -d /app -s /sbin/nologin -c "App user" app && \
@@ -40,5 +42,8 @@ USER root
 COPY default.conf /etc/apache2/sites-enabled/000-default.conf
 
 CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+
+RUN composer install
+RUN echo "* * * * * app php /var/www/html/artisan schedule:run >> /var/log/cron.log 2>&1" >> /etc/cront.d/laravel
 
 EXPOSE 80

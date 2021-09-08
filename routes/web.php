@@ -12,7 +12,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('upload', 'UploadExcelController@index')
+    ->name('upload.index');
+Route::resource('row', 'RowController');
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('template');
 });

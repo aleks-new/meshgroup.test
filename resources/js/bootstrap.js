@@ -22,7 +22,22 @@ try {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+let token = document.head.querySelector('meta[name="csrf"]');
+if (token) {
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+}
+axios.interceptors.response.use(r => r, (error) => {
+    if(typeof error.response !== 'undefined'){
+        let msg = [];
+        for(let field in error.response.data.errors){
+            error.response.data.errors[field].forEach((val) => {
+                msg.push(val);
+            });
+        }
 
+        alert(msg.join("\n"));
+    }
+})
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
