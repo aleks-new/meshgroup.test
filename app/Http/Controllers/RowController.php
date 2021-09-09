@@ -3,17 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Row;
+use App\Services\RowService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\View\View;
 
 class RowController extends Controller {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return Application|Factory|View
      */
-    public function index() {
-        //
+    public function index(RowService $rowService) {
+        $groups = $rowService->getGroupRows();
+        return view('rows.index', [
+            'groups' => $groups
+        ]);
     }
 
     /**

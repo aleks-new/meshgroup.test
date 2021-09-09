@@ -72,7 +72,10 @@ return [
     ],
 
     'imports'            => [
-
+        'pre_calculate_formulas' => true,
+        'dates' => [
+            'enabled' => false
+        ],
         /*
         |--------------------------------------------------------------------------
         | Read Only
