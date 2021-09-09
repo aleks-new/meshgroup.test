@@ -1,17 +1,58 @@
 version: '3'
 services:
   web:
+    image: laravel-www
+    container_name: laravel-www
     environment:
-    - APACHE_RUN_USER=#1000
+      APP_ENV: local
+      CONTAINER_ROLE: web
+      CACHE_DRIVER: redis
+      SESSION_DRIVER: redis
+      QUEUE_DRIVER: redis
+      REDIS_HOST: redis
     build:
-      context: ./docker/web
+      context: ./docker/
+      dockerfile: Dockerfile
+    depends_on:
+      - database
+      - redis
+      - rabbitmq-management
     ports:
-    - 10000:80
+    - 8080:80
     volumes:
     - ./:/var/www/html
+    
+  scheduler:
+    image: laravel-www
+    container_name: laravel-scheduler
+    build:
+      context: ./docker/
+      dockerfile: Dockerfile
+    depends_on:
+      - database
+      - redis
+      - rabbitmq-management
+    volumes:
+    - ./:/var/www/html
+    environment:
+      APP_ENV: local
+      CONTAINER_ROLE: scheduler
+      CACHE_DRIVER: redis
+      SESSION_DRIVER: redis
+      QUEUE_DRIVER: redis
+      REDIS_HOST: redis
+      
+  redis:
+    container_name: laravel-redis
+    image: redis:4-alpine
+    ports:
+      - 16379:6379
+    volumes:
+      - redis:/data
 
   database:
     image: mariadb
+    container_name: laravel-database
     restart: always
     ports:
     - 33061:3306
@@ -19,3 +60,17 @@ services:
       MYSQL_ROOT_PASSWORD: 123
     volumes:
       - ./docker/database:/var/lib/mysql
+
+  rabbitmq-management:
+    image: rabbitmq:management
+    container_name: laravel-rabbitmq-management
+    build:
+      context: ./docker/
+      dockerfile: DockerfileRabbit
+    ports:
+      - 5672:5672
+      - 15672:15672
+      
+volumes:
+  redis:
+    driver: "local"

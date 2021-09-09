@@ -16,6 +16,4 @@ Route::get('upload', 'UploadExcelController@index')
     ->name('upload.index');
 Route::resource('row', 'RowController');
 
-Route::get('/', function () {
-    return view('template');
-});
+Route::get('/', 'WelcomeController@index');
