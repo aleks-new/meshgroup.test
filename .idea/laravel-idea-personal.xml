@@ -3,6 +3,8 @@
   <component name="LaravelIdeaPersonalSettings">
     <option name="generationStringOptionValues">
       <map>
+        <entry key="createEvent.private" value="" />
+        <entry key="createEvent.shouldBroadcast" value="1" />
         <entry key="createFormRequest.generateAuthorize" value="" />
       </map>
     </option>

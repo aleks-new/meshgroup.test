@@ -34,9 +34,33 @@ services:
       - rabbitmq-management
     volumes:
     - ./:/var/www/html
+    
     environment:
       APP_ENV: local
       CONTAINER_ROLE: scheduler
+      CACHE_DRIVER: redis
+      SESSION_DRIVER: redis
+      QUEUE_DRIVER: redis
+      REDIS_HOST: redis
+    
+  websockets:
+    image: laravel-www
+    container_name: laravel-websockets
+    build:
+      context: ./docker/
+      dockerfile: Dockerfile
+    depends_on:
+      - database
+      - redis
+      - rabbitmq-management
+    ports:
+    - 6001:6001
+    volumes:
+    - ./:/var/www/html
+    
+    environment:
+      APP_ENV: local
+      CONTAINER_ROLE: websockets
       CACHE_DRIVER: redis
       SESSION_DRIVER: redis
       QUEUE_DRIVER: redis
