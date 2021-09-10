@@ -19,7 +19,6 @@
                 <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Main</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('upload.index') }}">Upload Excel</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('row.index') }}">Rows</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Main</a></li>
             </ul>
         </nav>
     </div>
